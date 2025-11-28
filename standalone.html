@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Email Generator</title>
+  <style>
+    /* Reset and Variables */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary-color: #8b5cf6;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --background-color: #f0f9ff;
+      --card-background: #ffffff;
+      --text-color: #1e293b;
+      --text-light: #64748b;
+      --border-color: #e2e8f0;
+      --input-border: #cbd5e1;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-lg);
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    header h1 {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    header p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      animation: fadeIn 1s ease-out;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2rem;
+    }
+
+    #input-section {
+      background: var(--card-background);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--input-border);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background-color: #f8fafc;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background-color: white;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px -1px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-small {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+      color: white;
+      border: none;
+    }
+
+    .btn-small:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+    }
+
+    #output-section {
+      background: var(--card-background);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      grid-column: 1 / 2;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    #output-section h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      animation: slideIn 0.6s ease-out;
+    }
+
+    .output-group {
+      margin-bottom: 2rem;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .output-group h3 {
+      margin-bottom: 0.5rem;
+      color: var(--secondary-color);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .output-content {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      padding: 1.25rem;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      border: 1px solid #bae6fd;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    #history-section {
+      background: var(--card-background);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      grid-column: 2 / 3;
+      grid-row: 1 / 3;
+      max-height: 600px;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      animation: fadeIn 1s ease-out;
+    }
+
+    #history-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+      font-weight: 700;
+      animation: slideIn 0.8s ease-out;
+    }
+
+    .empty-state {
+      color: var(--secondary-color);
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .history-item {
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid #e9d5ff;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    .history-item:hover {
+      transform: translateX(8px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+      border-color: var(--secondary-color);
+      background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    }
+
+    .history-item:active {
+      transform: translateX(4px) scale(0.98);
+    }
+
+    .history-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .history-item-header strong {
+      font-size: 0.875rem;
+      color: var(--text-color);
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+
+    .history-timestamp {
+      font-size: 0.75rem;
+      color: var(--secondary-color);
+      white-space: nowrap;
+    }
+
+    .history-preview {
+      font-size: 0.75rem;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .history-actions .btn {
+      flex: 1;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    #error-display {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--error-color);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 400px;
+      z-index: 1000;
+      animation: slideIn 0.4s ease-out;
+    }
+
+    #dismiss-error-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+    }
+
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    #loading-overlay p {
+      color: white;
+      margin-top: 1rem;
+      font-size: 1.125rem;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--secondary-color);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      #history-section {
+        grid-column: 1 / 2;
+        grid-row: auto;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Corporate Email Generator</h1>
+    <p>Generate professional emails quickly and easily</p>
+  </header>
+
+  <main>
+    <section id="input-section">
+      <form id="email-form">
+        <div class="form-group">
+          <label for="main-content">Main Content *</label>
+          <textarea id="main-content" name="mainContent" rows="6" required placeholder="Enter the main content of your email..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="keywords">Additional Keywords (optional)</label>
+          <input type="text" id="keywords" name="keywords" placeholder="Enter keywords separated by commas or spaces...">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tone">Tone</label>
+            <select id="tone" name="tone">
+              <option value="default">Professional (Default)</option>
+              <option value="formal">Formal</option>
+              <option value="friendly">Friendly</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="length">Length</label>
+            <select id="length" name="length">
+              <option value="standard">Standard (Default)</option>
+              <option value="brief">Brief</option>
+              <option value="detailed">Detailed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-context">Recipient</label>
+            <select id="recipient-context" name="recipientContext">
+              <option value="default">General (Default)</option>
+              <option value="manager">Manager</option>
+              <option value="colleague">Colleague</option>
+              <option value="client">Client</option>
+              <option value="team">Team</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" id="generate-btn" class="btn btn-primary">Generate Email</button>
+          <button type="button" id="reset-btn" class="btn btn-secondary">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="output-section" class="hidden">
+      <h2>Generated Email</h2>
+      
+      <div id="output-container">
+        <div class="output-group">
+          <h3>Subject Line</h3>
+          <div id="subject-output" class="output-content"></div>
+          <button type="button" id="copy-subject-btn" class="btn btn-small">Copy Subject</button>
+        </div>
+
+        <div class="output-group">
+          <h3>Email Body</h3>
+          <div id="body-output" class="output-content"></div>
+          <button type="button" id="copy-body-btn" class="btn btn-small">Copy Body</button>
+        </div>
+
+        <div class="button-group">
+          <button type="button" id="copy-all-btn" class="btn btn-primary">Copy Full Email</button>
+        </div>
+      </div>
+    </section>
+
+    <aside id="history-section">
+      <h2>Recent Emails</h2>
+      <div id="history-list">
+        <p class="empty-state">No emails generated yet</p>
+      </div>
+    </aside>
+
+    <div id="error-display" class="hidden">
+      <p id="error-message"></p>
+      <button type="button" id="dismiss-error-btn">×</button>
+    </div>
+
+    <div id="loading-overlay" class="hidden">
+      <div class="spinner"></div>
+      <p>Generating your email...</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Corporate Email Generator</p>
+  </footer>
+
+  <script>
+    // Complete application code inline
+    class App {
+      constructor() {
+        this.currentEmail = null;
+        this.history = this.loadHistory();
+        this.initializeElements();
+        this.attachEventListeners();
+        this.renderHistory();
+      }
+
+      initializeElements() {
+        this.form = document.getElementById('email-form');
+        this.mainContentInput = document.getElementById('main-content');
+        this.keywordsInput = document.getElementById('keywords');
+        this.toneSelect = document.getElementById('tone');
+        this.lengthSelect = document.getElementById('length');
+        this.recipientContextSelect = document.getElementById('recipient-context');
+        this.generateBtn = document.getElementById('generate-btn');
+        this.resetBtn = document.getElementById('reset-btn');
+        this.outputSection = document.getElementById('output-section');
+        this.subjectOutput = document.getElementById('subject-output');
+        this.bodyOutput = document.getElementById('body-output');
+        this.copySubjectBtn = document.getElementById('copy-subject-btn');
+        this.copyBodyBtn = document.getElementById('copy-body-btn');
+        this.copyAllBtn = document.getElementById('copy-all-btn');
+        this.historyList = document.getElementById('history-list');
+        this.errorDisplay = document.getElementById('error-display');
+        this.errorMessage = document.getElementById('error-message');
+        this.dismissErrorBtn = document.getElementById('dismiss-error-btn');
+        this.loadingOverlay = document.getElementById('loading-overlay');
+      }
+
+      attachEventListeners() {
+        this.form.addEventListener('submit', (e) => this.handleGenerate(e));
+        this.resetBtn.addEventListener('click', () => this.handleReset());
+        this.copySubjectBtn.addEventListener('click', () => this.handleCopySubject());
+        this.copyBodyBtn.addEventListener('click', () => this.handleCopyBody());
+        this.copyAllBtn.addEventListener('click', () => this.handleCopyAll());
+        this.dismissErrorBtn.addEventListener('click', () => this.hideError());
+      }
+
+      async handleGenerate(e) {
+        e.preventDefault();
+        this.hideError();
+
+        try {
+          const mainContent = this.mainContentInput.value.trim();
+          
+          if (!mainContent) {
+            throw new Error('Please enter the main content for your email.');
+          }
+
+          const params = {
+            mainContent,
+            keywords: this.parseKeywords(this.keywordsInput.value),
+            tone: this.toneSelect.value,
+            length: this.lengthSelect.value,
+            recipientContext: this.recipientContextSelect.value
+          };
+
+          this.showLoading();
+          
+          // Simulate API delay
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          
+          const email = this.generateMockEmail(params);
+          
+          this.hideLoading();
+          this.addToHistory(email);
+          this.displayEmail(email);
+          this.renderHistory();
+
+        } catch (error) {
+          this.hideLoading();
+          this.showError(error.message);
+        }
+      }
+
+      generateMockEmail(params) {
+        const { mainContent, tone, length, recipientContext } = params;
+        
+        const subject = `Re: ${mainContent.substring(0, 50)}${mainContent.length > 50 ? '...' : ''}`;
+        
+        let greeting = 'Dear Recipient,';
+        let closing = 'Best regards,\n[Your Name]';
+        
+        if (recipientContext === 'manager') {
+          greeting = 'Dear [Manager Name],';
+          closing = 'Respectfully,\n[Your Name]';
+        } else if (recipientContext === 'colleague') {
+          greeting = 'Hi [Colleague Name],';
+          closing = 'Thanks,\n[Your Name]';
+        } else if (recipientContext === 'client') {
+          greeting = 'Dear [Client Name],';
+          closing = 'Sincerely,\n[Your Name]';
+        } else if (recipientContext === 'team') {
+          greeting = 'Hi Team,';
+          closing = 'Best,\n[Your Name]';
+        }
+
+        let body = `${greeting}\n\n`;
+        
+        if (tone === 'urgent') {
+          body += `I am writing to urgently address ${mainContent.toLowerCase()}.\n\n`;
+          body += `This matter requires immediate attention. Please review and respond as soon as possible.\n\n`;
+        } else if (tone === 'formal') {
+          body += `I hope this message finds you well. I am writing to formally address ${mainContent.toLowerCase()}.\n\n`;
+          body += `I would appreciate your attention to this matter at your earliest convenience.\n\n`;
+        } else if (tone === 'friendly') {
+          body += `I hope you're doing well! I wanted to reach out about ${mainContent.toLowerCase()}.\n\n`;
+          body += `Let me know if you have any questions or need any clarification.\n\n`;
+        } else {
+          body += `I hope this email finds you well. I am writing to address ${mainContent.toLowerCase()}.\n\n`;
+          body += `Please let me know if you have any questions or require additional information.\n\n`;
+        }
+
+        if (length === 'detailed') {
+          body += `I wanted to provide some additional context and details regarding this matter. `;
+          body += `This is an important topic that deserves thorough consideration and discussion. `;
+          body += `I believe that by working together, we can achieve the best possible outcome.\n\n`;
+        }
+
+        body += `Thank you for your time and attention to this matter.\n\n${closing}`;
+
+        return {
+          id: this.generateId(),
+          subject,
+          body,
+          timestamp: new Date(),
+          params
+        };
+      }
+
+      generateId() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          const r = Math.random() * 16 | 0;
+          const v = c === 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+      }
+
+      parseKeywords(input) {
+        if (!input) return [];
+        return input.split(/[,\s]+/).map(k => k.trim()).filter(k => k.length > 0);
+      }
+
+      handleReset() {
+        this.form.reset();
+        this.hideOutput();
+        this.hideError();
+        this.currentEmail = null;
+      }
+
+      async handleCopySubject() {
+        if (!this.currentEmail) return;
+        try {
+          await this.copyToClipboard(this.currentEmail.subject);
+          this.showCopyConfirmation(this.copySubjectBtn);
+        } catch (error) {
+          this.showError('Unable to copy to clipboard');
+        }
+      }
+
+      async handleCopyBody() {
+        if (!this.currentEmail) return;
+        try {
+          await this.copyToClipboard(this.currentEmail.body);
+          this.showCopyConfirmation(this.copyBodyBtn);
+        } catch (error) {
+          this.showError('Unable to copy to clipboard');
+        }
+      }
+
+      async handleCopyAll() {
+        if (!this.currentEmail) return;
+        try {
+          const text = `Subject: ${this.currentEmail.subject}\n\n${this.currentEmail.body}`;
+          await this.copyToClipboard(text);
+          this.showCopyConfirmation(this.copyAllBtn);
+        } catch (error) {
+          this.showError('Unable to copy to clipboard');
+        }
+      }
+
+      async copyToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+      }
+
+      displayEmail(email) {
+        this.currentEmail = email;
+        this.subjectOutput.textContent = email.subject;
+        this.bodyOutput.textContent = email.body;
+        this.outputSection.classList.remove('hidden');
+      }
+
+      hideOutput() {
+        this.outputSection.classList.add('hidden');
+      }
+
+      loadHistory() {
+        try {
+          const stored = localStorage.getItem('email_generator_history');
+          if (!stored) return [];
+          const parsed = JSON.parse(stored);
+          return parsed.map(email => ({
+            ...email,
+            timestamp: new Date(email.timestamp)
+          }));
+        } catch (error) {
+          return [];
+        }
+      }
+
+      saveHistory() {
+        try {
+          localStorage.setItem('email_generator_history', JSON.stringify(this.history));
+        } catch (error) {
+          console.error('Failed to save history:', error);
+        }
+      }
+
+      addToHistory(email) {
+        this.history.unshift(email);
+        if (this.history.length > 10) {
+          this.history = this.history.slice(0, 10);
+        }
+        this.saveHistory();
+      }
+
+      renderHistory() {
+        if (this.history.length === 0) {
+          this.historyList.innerHTML = '<p class="empty-state">No emails generated yet</p>';
+          return;
+        }
+
+        this.historyList.innerHTML = this.history.map(email => `
+          <div class="history-item" data-id="${email.id}">
+            <div class="history-item-header">
+              <strong>${this.escapeHtml(email.subject)}</strong>
+              <span class="history-timestamp">${this.formatTimestamp(email.timestamp)}</span>
+            </div>
+            <p class="history-preview">${this.escapeHtml(email.body.substring(0, 50))}...</p>
+            <div class="history-actions">
+              <button class="btn btn-small view-history-btn" data-id="${email.id}">View</button>
+              <button class="btn btn-small copy-history-btn" data-id="${email.id}">Copy</button>
+            </div>
+          </div>
+        `).join('');
+
+        this.historyList.querySelectorAll('.view-history-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            const email = this.history.find(e => e.id === id);
+            if (email) this.displayEmail(email);
+          });
+        });
+
+        this.historyList.querySelectorAll('.copy-history-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const id = e.target.dataset.id;
+            const email = this.history.find(e => e.id === id);
+            if (email) {
+              try {
+                const text = `Subject: ${email.subject}\n\n${email.body}`;
+                await this.copyToClipboard(text);
+                this.showError('Copied to clipboard!', 'success');
+              } catch (error) {
+                this.showError('Unable to copy to clipboard');
+              }
+            }
+          });
+        });
+      }
+
+      showLoading() {
+        this.loadingOverlay.classList.remove('hidden');
+        this.generateBtn.disabled = true;
+      }
+
+      hideLoading() {
+        this.loadingOverlay.classList.add('hidden');
+        this.generateBtn.disabled = false;
+      }
+
+      showError(message, type = 'error') {
+        this.errorMessage.textContent = message;
+        this.errorDisplay.classList.remove('hidden');
+        
+        if (type === 'success') {
+          this.errorDisplay.style.backgroundColor = 'var(--success-color)';
+        } else {
+          this.errorDisplay.style.backgroundColor = 'var(--error-color)';
+        }
+
+        setTimeout(() => this.hideError(), 5000);
+      }
+
+      hideError() {
+        this.errorDisplay.classList.add('hidden');
+      }
+
+      showCopyConfirmation(button) {
+        const originalText = button.textContent;
+        button.textContent = '✓ Copied!';
+        button.style.backgroundColor = 'var(--success-color)';
+
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.backgroundColor = '';
+        }, 2000);
+      }
+
+      formatTimestamp(date) {
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return 'Just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+        
+        return date.toLocaleDateString();
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    }
+
+    // Initialize app when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => new App());
+    } else {
+      new App();
+    }
+  </script>
+</body>
+</html>
